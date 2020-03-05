@@ -42,6 +42,123 @@
           }
         }
       }
+    },
+    "cookies-showcase": {
+      "projectType": "application",
+      "schematics": {},
+      "root": "projects/cookies-showcase",
+      "sourceRoot": "projects/cookies-showcase/src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/cookies-showcase",
+            "index": "projects/cookies-showcase/src/index.html",
+            "main": "projects/cookies-showcase/src/main.ts",
+            "polyfills": "projects/cookies-showcase/src/polyfills.ts",
+            "tsConfig": "projects/cookies-showcase/tsconfig.app.json",
+            "aot": true,
+            "assets": [
+              "projects/cookies-showcase/src/favicon.ico",
+              "projects/cookies-showcase/src/assets"
+            ],
+            "styles": [
+              "projects/cookies-showcase/src/styles.css"
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "projects/cookies-showcase/src/environments/environment.ts",
+                  "with": "projects/cookies-showcase/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "cookies-showcase:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "cookies-showcase:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "cookies-showcase:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/cookies-showcase/src/test.ts",
+            "polyfills": "projects/cookies-showcase/src/polyfills.ts",
+            "tsConfig": "projects/cookies-showcase/tsconfig.spec.json",
+            "karmaConfig": "projects/cookies-showcase/karma.conf.js",
+            "assets": [
+              "projects/cookies-showcase/src/favicon.ico",
+              "projects/cookies-showcase/src/assets"
+            ],
+            "styles": [
+              "projects/cookies-showcase/src/styles.css"
+            ],
+            "scripts": []
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/cookies-showcase/tsconfig.app.json",
+              "projects/cookies-showcase/tsconfig.spec.json",
+              "projects/cookies-showcase/e2e/tsconfig.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        },
+        "e2e": {
+          "builder": "@angular-devkit/build-angular:protractor",
+          "options": {
+            "protractorConfig": "projects/cookies-showcase/e2e/protractor.conf.js",
+            "devServerTarget": "cookies-showcase:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "cookies-showcase:serve:production"
+            }
+          }
+        }
+      }
     }},
   "defaultProject": "ngu-cookies"
 }
