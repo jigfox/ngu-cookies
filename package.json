@@ -43,6 +43,7 @@
     "karma-coverage-istanbul-reporter": "~2.1.0",
     "karma-jasmine": "~2.0.1",
     "karma-jasmine-html-reporter": "^1.4.2",
+    "lint-staged": "^10.0.8",
     "ng-packagr": "^9.0.0",
     "prettier": "1.19.1",
     "protractor": "~5.4.3",
@@ -52,7 +53,8 @@
   },
   "husky": {
     "hooks": {
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
+      "pre-commit": "lint-staged"
     }
   },
   "prettier": {
@@ -60,5 +62,14 @@
     "trailingComma": "all",
     "printWidth": 80,
     "endOfLine": "lf"
+  },
+  "lint-staged": {
+    "*.{js,css,json,md,html,yaml,yml}": [
+      "prettier --write"
+    ],
+    "*.ts": [
+      "tslint --fix",
+      "prettier --write"
+    ]
   }
 }
