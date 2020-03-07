@@ -50,5 +50,10 @@ describe('CookiesService', () => {
         expect(spy).toHaveBeenCalledWith(`${key}=${value}`);
       });
     });
+
+    it('can read new cookie', () => {
+      service.put('new', 'cookie');
+      expect(service.get('new')).toEqual('cookie');
+    });
   });
 });

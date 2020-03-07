@@ -19,6 +19,7 @@ export class CookiesService {
   }
 
   put(key: string, value: string): void {
+    this.cookies.set(key, value);
     this.doc.cookie = `${key}=${value}`;
   }
 }
