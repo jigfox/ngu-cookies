@@ -1,6 +1,6 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
-  "version": 1, 
+  "version": 1,
   "newProjectRoot": "projects",
   "projects": {
     "ngu-cookies": {
@@ -36,9 +36,7 @@
               "projects/ngu-cookies/tsconfig.lib.json",
               "projects/ngu-cookies/tsconfig.spec.json"
             ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
+            "exclude": ["**/node_modules/**"]
           }
         }
       }
@@ -53,7 +51,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/cookies-showcase",
+            "outputPath": "dist/cookies-showcase/browser",
             "index": "projects/cookies-showcase/src/index.html",
             "main": "projects/cookies-showcase/src/main.ts",
             "polyfills": "projects/cookies-showcase/src/polyfills.ts",
@@ -63,9 +61,7 @@
               "projects/cookies-showcase/src/favicon.ico",
               "projects/cookies-showcase/src/assets"
             ],
-            "styles": [
-              "projects/cookies-showcase/src/styles.css"
-            ],
+            "styles": ["projects/cookies-showcase/src/styles.css"],
             "scripts": []
           },
           "configurations": {
@@ -127,9 +123,7 @@
               "projects/cookies-showcase/src/favicon.ico",
               "projects/cookies-showcase/src/assets"
             ],
-            "styles": [
-              "projects/cookies-showcase/src/styles.css"
-            ],
+            "styles": ["projects/cookies-showcase/src/styles.css"],
             "scripts": []
           }
         },
@@ -141,9 +135,7 @@
               "projects/cookies-showcase/tsconfig.spec.json",
               "projects/cookies-showcase/e2e/tsconfig.json"
             ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
+            "exclude": ["**/node_modules/**"]
           }
         },
         "e2e": {
@@ -157,8 +149,54 @@
               "devServerTarget": "cookies-showcase:serve:production"
             }
           }
+        },
+        "server": {
+          "builder": "@angular-devkit/build-angular:server",
+          "options": {
+            "outputPath": "dist/cookies-showcase/server",
+            "main": "projects/cookies-showcase/server.ts",
+            "tsConfig": "projects/cookies-showcase/tsconfig.server.json"
+          },
+          "configurations": {
+            "production": {
+              "outputHashing": "media",
+              "fileReplacements": [
+                {
+                  "replace": "projects/cookies-showcase/src/environments/environment.ts",
+                  "with": "projects/cookies-showcase/src/environments/environment.prod.ts"
+                }
+              ],
+              "sourceMap": false,
+              "optimization": true
+            }
+          }
+        },
+        "serve-ssr": {
+          "builder": "@nguniversal/builders:ssr-dev-server",
+          "options": {
+            "browserTarget": "cookies-showcase:build",
+            "serverTarget": "cookies-showcase:server"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "cookies-showcase:build:production",
+              "serverTarget": "cookies-showcase:server:production"
+            }
+          }
+        },
+        "prerender": {
+          "builder": "@nguniversal/builders:prerender",
+          "options": {
+            "browserTarget": "cookies-showcase:build:production",
+            "serverTarget": "cookies-showcase:server:production",
+            "routes": ["/"]
+          },
+          "configurations": {
+            "production": {}
+          }
         }
       }
-    }},
+    }
+  },
   "defaultProject": "ngu-cookies"
 }
