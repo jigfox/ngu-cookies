@@ -26,6 +26,11 @@ export class CookiesService {
     this.doc.cookie = cookieEntries.join('; ');
   }
 
+  delete(key: string): void {
+    this.cookies.delete(key);
+    this.put(key, '', { expires: new Date(0) });
+  }
+
   protected parseCookies(): void {
     (this.doc.cookie ?? '')
       .split(/; */)

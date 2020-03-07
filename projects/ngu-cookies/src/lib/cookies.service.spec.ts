@@ -68,4 +68,17 @@ describe('CookiesService', () => {
       });
     });
   });
+
+  describe('.delete(key: string)', () => {
+    it('deletes cookie', () => {
+      const doc = TestBed.inject(DOCUMENT);
+      const spy = spyOnProperty(doc, 'cookie', 'set');
+      expect(service.get('key1')).toBeTruthy();
+      service.delete('key1');
+      expect(service.get('key1')).toBeFalsy();
+      expect(spy).toHaveBeenCalledWith(
+        'key1=; expires=Thu, 01 Jan 1970 00:00:00 GMT',
+      );
+    });
+  });
 });
