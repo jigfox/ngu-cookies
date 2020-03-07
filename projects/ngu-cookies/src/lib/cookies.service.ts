@@ -5,7 +5,7 @@ import { DOCUMENT } from '@angular/common';
 export class CookiesService {
   protected cookies = new Map<string, string>();
 
-  constructor(@Inject(DOCUMENT) doc: Document) {
+  constructor(@Inject(DOCUMENT) private doc: Document) {
     (doc.cookie ?? '')
       .split(/; */)
       .map(pair => pair.split('=').map(a => a.trim()))
@@ -16,5 +16,9 @@ export class CookiesService {
 
   get(key: string): string {
     return this.cookies.get(key);
+  }
+
+  put(key: string, value: string): void {
+    this.doc.cookie = `${key}=${value}`;
   }
 }
