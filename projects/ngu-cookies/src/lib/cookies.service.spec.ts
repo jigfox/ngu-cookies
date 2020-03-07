@@ -38,7 +38,7 @@ describe('CookiesService', () => {
     });
   });
 
-  describe('.put(key: string, value: string)', () => {
+  describe('.put(key: string, value: string, options: CookieOptions)', () => {
     [
       { key: 'key1', value: 'value1' },
       { key: 'key2', value: 'value2' },
@@ -54,6 +54,18 @@ describe('CookiesService', () => {
     it('can read new cookie', () => {
       service.put('new', 'cookie');
       expect(service.get('new')).toEqual('cookie');
+    });
+
+    describe('setting expiration', () => {
+      it('sets expiration date as utc date', () => {
+        const doc = TestBed.inject(DOCUMENT);
+        const spy = spyOnProperty(doc, 'cookie', 'set');
+        const expires = new Date();
+        service.put('name', 'value', { expires });
+        expect(spy).toHaveBeenCalledWith(
+          `name=value; expires=${expires.toUTCString()}`,
+        );
+      });
     });
   });
 });

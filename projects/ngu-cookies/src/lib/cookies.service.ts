@@ -1,6 +1,10 @@
 import { Injectable, Inject } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 
+interface CookieOptions {
+  expires?: Date;
+}
+
 @Injectable()
 export class CookiesService {
   protected cookies = new Map<string, string>();
@@ -13,9 +17,13 @@ export class CookiesService {
     return this.cookies.get(key);
   }
 
-  put(key: string, value: string): void {
+  put(key: string, value: string, options: CookieOptions = {}): void {
     this.cookies.set(key, value);
-    this.doc.cookie = `${key}=${value}`;
+    const cookieEntries = [`${key}=${value}`];
+    if (options.expires) {
+      cookieEntries.push(`expires=${options.expires.toUTCString()}`);
+    }
+    this.doc.cookie = cookieEntries.join('; ');
   }
 
   protected parseCookies(): void {
