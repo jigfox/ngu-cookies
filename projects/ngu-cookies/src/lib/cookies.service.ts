@@ -28,6 +28,10 @@ export class CookiesService {
     this.parseCookies();
   }
 
+  count(): number {
+    return this.cookies.size;
+  }
+
   get(key: string, skipUriDecoding = false): string {
     const value = this.cookies.get(key);
     return value && skipUriDecoding ? value : decodeURIComponent(value);
@@ -42,6 +46,13 @@ export class CookiesService {
     }
     if (!this.cookieKeyRegex.test(key)) {
       throw Error(`key '${key}' contains invalid characters`);
+    }
+    // http://browsercookielimits.squawky.net/
+    if (this.doc.cookie.length + 1 + this.getCookieLength(key, value) > 4093) {
+      throw new Error('Max cookie size reached');
+    }
+    if (this.cookies.size >= 50) {
+      throw new Error('Max cookies count reached');
     }
     this.cookies.set(key, value);
     const cookieEntries = [`${key}=${value}`];
@@ -78,5 +89,9 @@ export class CookiesService {
       .forEach(([key, value]) => {
         this.cookies.set(key, value);
       });
+  }
+
+  protected getCookieLength(key: string, value: string): number {
+    return key.length + value.length + 1;
   }
 }

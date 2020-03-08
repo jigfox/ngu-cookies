@@ -196,6 +196,25 @@ describe('CookiesService', () => {
         expect(spy).toHaveBeenCalledWith('name=value; samesite=lax');
       });
     });
+
+    describe('cookie limits', () => {
+      // http://browsercookielimits.squawky.net/
+      it('throws error if more than 50 cookies are added', () => {
+        for (let i = 0, len = 50 - service.count(); i < len; i++) {
+          expect(() => service.put(`a${i}`, '')).not.toThrowError();
+        }
+        expect(() => service.put(`a51`, '')).toThrowError();
+      });
+
+      it('throws error if more than 4093 bytes will be added', () => {
+        const doc = TestBed.inject(DOCUMENT);
+        spyOnProperty(doc, 'cookie', 'get').and.returnValue(
+          `x=${'a'.repeat(4089)}`, // 4091 bytes
+        );
+        // add ';b=' 3 bytes
+        expect(() => service.put('b', '')).toThrowError();
+      });
+    });
   });
 
   describe('.delete(key: string)', () => {
