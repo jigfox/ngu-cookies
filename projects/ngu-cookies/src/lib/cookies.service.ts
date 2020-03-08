@@ -3,6 +3,7 @@ import { DOCUMENT } from '@angular/common';
 
 interface CookieOptions {
   expires?: Date;
+  domain?: string;
 }
 
 @Injectable()
@@ -22,6 +23,9 @@ export class CookiesService {
     const cookieEntries = [`${key}=${value}`];
     if (options.expires) {
       cookieEntries.push(`expires=${options.expires.toUTCString()}`);
+    }
+    if (options.domain) {
+      cookieEntries.push(`domain=${options.domain}`);
     }
     this.doc.cookie = cookieEntries.join('; ');
   }

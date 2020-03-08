@@ -67,6 +67,16 @@ describe('CookiesService', () => {
         );
       });
     });
+
+    describe('setting domain', () => {
+      it('sets to configured Domain', () => {
+        const doc = TestBed.inject(DOCUMENT);
+        const spy = spyOnProperty(doc, 'cookie', 'set');
+        const domain = 'example.com';
+        service.put('name', 'value', { domain });
+        expect(spy).toHaveBeenCalledWith('name=value; domain=example.com');
+      });
+    });
   });
 
   describe('.delete(key: string)', () => {
