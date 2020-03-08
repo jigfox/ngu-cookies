@@ -1,12 +1,18 @@
 import { Injectable, Inject } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 
+export enum SameSite {
+  Lax = 'lax',
+  Strict = 'strict',
+}
+
 interface CookieOptions {
   expires?: Date;
   domain?: string;
   maxAge?: number;
   path?: string;
   secure?: boolean;
+  samesite?: SameSite;
 }
 
 @Injectable()
@@ -38,6 +44,9 @@ export class CookiesService {
     }
     if (options.secure) {
       cookieEntries.push('secure');
+    }
+    if (options.samesite) {
+      cookieEntries.push(`samesite=${options.samesite}`);
     }
     this.doc.cookie = cookieEntries.join('; ');
   }

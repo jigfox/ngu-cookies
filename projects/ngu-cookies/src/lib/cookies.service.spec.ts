@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { DOCUMENT } from '@angular/common';
 
-import { CookiesService } from './cookies.service';
+import { CookiesService, SameSite } from './cookies.service';
 
 class DocumentMock {
   get cookie(): string {
@@ -105,6 +105,16 @@ describe('CookiesService', () => {
         const secure = true;
         service.put('name', 'value', { secure });
         expect(spy).toHaveBeenCalledWith('name=value; secure');
+      });
+    });
+
+    describe('setting samesite', () => {
+      it('adds samesite to cookie', () => {
+        const doc = TestBed.inject(DOCUMENT);
+        const spy = spyOnProperty(doc, 'cookie', 'set');
+        const samesite = SameSite.Lax;
+        service.put('name', 'value', { samesite });
+        expect(spy).toHaveBeenCalledWith('name=value; samesite=lax');
       });
     });
   });
