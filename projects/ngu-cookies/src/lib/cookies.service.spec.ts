@@ -51,6 +51,63 @@ describe('CookiesService', () => {
       });
     });
 
+    describe('setting invalid cookies', () => {
+      describe('invalid values', () => {
+        [
+          { illegal: ' ', key: 'key', value: 'in valid' },
+          { illegal: '"', key: 'key', value: 'in"valid' },
+          { illegal: ';', key: 'key', value: 'in;valid' },
+          { illegal: ',', key: 'key', value: 'in,valid' },
+          { illegal: '\\', key: 'key', value: 'in\\valid' },
+        ].forEach(({ illegal, key, value }) => {
+          it(`throws error for values containing '${illegal}'`, () => {
+            expect(() => service.put(key, value)).toThrowError();
+          });
+        });
+
+        const allAllowedCharactersFoValue =
+          "!#$%&'()*+-./01234567890:<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[]^_`abcdefghijklmnopqrstuvwxyz{|}~";
+        it(`allows "${allAllowedCharactersFoValue}"`, () => {
+          expect(() =>
+            service.put('key', allAllowedCharactersFoValue),
+          ).not.toThrowError();
+        });
+      });
+      describe('invalid keys', () => {
+        [
+          { illegal: ' ', value: 'value', key: 'in valid' },
+          { illegal: '"', value: 'value', key: 'in"valid' },
+          { illegal: ';', value: 'value', key: 'in;valid' },
+          { illegal: ',', value: 'value', key: 'in,valid' },
+          { illegal: '\\', value: 'value', key: 'in\\valid' },
+          { illegal: '(', value: 'value', key: 'in(valid' },
+          { illegal: ')', value: 'value', key: 'in)valid' },
+          { illegal: '>', value: 'value', key: 'in>valid' },
+          { illegal: '<', value: 'value', key: 'in<valid' },
+          { illegal: '@', value: 'value', key: 'in@valid' },
+          { illegal: ':', value: 'value', key: 'in:valid' },
+          { illegal: '/', value: 'value', key: 'in/valid' },
+          { illegal: '[', value: 'value', key: 'in[valid' },
+          { illegal: ']', value: 'value', key: 'in]valid' },
+          { illegal: '?', value: 'value', key: 'in?valid' },
+          { illegal: '=', value: 'value', key: 'in=valid' },
+          { illegal: '{', value: 'value', key: 'in{valid' },
+          { illegal: '}', value: 'value', key: 'in}valid' },
+        ].forEach(({ illegal, key, value }) => {
+          it(`throws error for keys containing '${illegal}'`, () => {
+            expect(() => service.put(key, value)).toThrowError();
+          });
+        });
+        const allAllowedCharactersForKey =
+          "!#$%&'*+-.01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ^_`abcdefghijklmnopqrstuvwxyz|~";
+        it(`allows "${allAllowedCharactersForKey}"`, () => {
+          expect(() =>
+            service.put(allAllowedCharactersForKey, 'value'),
+          ).not.toThrowError();
+        });
+      });
+    });
+
     it('can read new cookie', () => {
       service.put('new', 'cookie');
       expect(service.get('new')).toEqual('cookie');

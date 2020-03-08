@@ -18,6 +18,10 @@ interface CookieOptions {
 @Injectable()
 export class CookiesService {
   protected cookies = new Map<string, string>();
+  // https://tools.ietf.org/html/rfc6265#section-4.1.1
+  protected cookieValueRegex = /^[\x21\x23-\x2B\x2D-\x3A\x3C-\x5B\x5D-\x7E]*$/;
+  // https://tools.ietf.org/html/rfc2616#section-2.2
+  protected cookieKeyRegex = /^[\x21\x23-\x27\x2A\x2B\x2D\x2E\x30-\x39\x41-\x5A\x5E-\x7A\x7C\x7E]*$/;
 
   constructor(@Inject(DOCUMENT) private doc: Document) {
     this.parseCookies();
@@ -28,6 +32,12 @@ export class CookiesService {
   }
 
   put(key: string, value: string, options: CookieOptions = {}): void {
+    if (!this.cookieValueRegex.test(value)) {
+      throw Error(`value '${value}' contains invalid characters`);
+    }
+    if (!this.cookieKeyRegex.test(key)) {
+      throw Error(`key '${key}' contains invalid characters`);
+    }
     this.cookies.set(key, value);
     const cookieEntries = [`${key}=${value}`];
     if (options.expires) {
