@@ -61,7 +61,13 @@ describe('CookiesService', () => {
           { illegal: '\\', key: 'key', value: 'in\\valid' },
         ].forEach(({ illegal, key, value }) => {
           it(`throws error for values containing '${illegal}'`, () => {
-            expect(() => service.put(key, value)).toThrowError();
+            expect(() =>
+              service.put(key, value, { skipUriEncoding: true }),
+            ).toThrowError();
+          });
+
+          it(`doesn not throw error for values containing '${illegal}' when encoded`, () => {
+            expect(() => service.put(key, value)).not.toThrowError();
           });
         });
 
@@ -69,7 +75,9 @@ describe('CookiesService', () => {
           "!#$%&'()*+-./01234567890:<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[]^_`abcdefghijklmnopqrstuvwxyz{|}~";
         it(`allows "${allAllowedCharactersFoValue}"`, () => {
           expect(() =>
-            service.put('key', allAllowedCharactersFoValue),
+            service.put('key', allAllowedCharactersFoValue, {
+              skipUriEncoding: true,
+            }),
           ).not.toThrowError();
         });
       });
@@ -95,14 +103,18 @@ describe('CookiesService', () => {
           { illegal: '}', value: 'value', key: 'in}valid' },
         ].forEach(({ illegal, key, value }) => {
           it(`throws error for keys containing '${illegal}'`, () => {
-            expect(() => service.put(key, value)).toThrowError();
+            expect(() =>
+              service.put(key, value, { skipUriEncoding: true }),
+            ).toThrowError();
           });
         });
         const allAllowedCharactersForKey =
           "!#$%&'*+-.01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ^_`abcdefghijklmnopqrstuvwxyz|~";
         it(`allows "${allAllowedCharactersForKey}"`, () => {
           expect(() =>
-            service.put(allAllowedCharactersForKey, 'value'),
+            service.put(allAllowedCharactersForKey, 'value', {
+              skipUriEncoding: true,
+            }),
           ).not.toThrowError();
         });
       });
@@ -111,6 +123,16 @@ describe('CookiesService', () => {
     it('can read new cookie', () => {
       service.put('new', 'cookie');
       expect(service.get('new')).toEqual('cookie');
+    });
+
+    it('decodes cookie correctly', () => {
+      service.put('cookie', '%20', { skipUriEncoding: true });
+      expect(service.get('cookie')).toEqual(' ');
+    });
+
+    it('skips decoding', () => {
+      service.put('cookie', ' ');
+      expect(service.get('cookie', true)).toEqual('%20');
     });
 
     describe('setting expiration', () => {

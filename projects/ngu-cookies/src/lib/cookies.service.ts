@@ -13,6 +13,7 @@ interface CookieOptions {
   path?: string;
   secure?: boolean;
   samesite?: SameSite;
+  skipUriEncoding?: boolean;
 }
 
 @Injectable()
@@ -27,11 +28,15 @@ export class CookiesService {
     this.parseCookies();
   }
 
-  get(key: string): string {
-    return this.cookies.get(key);
+  get(key: string, skipUriDecoding = false): string {
+    const value = this.cookies.get(key);
+    return value && skipUriDecoding ? value : decodeURIComponent(value);
   }
 
   put(key: string, value: string, options: CookieOptions = {}): void {
+    if (!options.skipUriEncoding) {
+      value = encodeURIComponent(value);
+    }
     if (!this.cookieValueRegex.test(value)) {
       throw Error(`value '${value}' contains invalid characters`);
     }
