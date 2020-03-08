@@ -6,6 +6,7 @@ interface CookieOptions {
   domain?: string;
   maxAge?: number;
   path?: string;
+  secure?: boolean;
 }
 
 @Injectable()
@@ -34,6 +35,9 @@ export class CookiesService {
     }
     if (options.path) {
       cookieEntries.push(`path=${options.path}`);
+    }
+    if (options.secure) {
+      cookieEntries.push('secure');
     }
     this.doc.cookie = cookieEntries.join('; ');
   }

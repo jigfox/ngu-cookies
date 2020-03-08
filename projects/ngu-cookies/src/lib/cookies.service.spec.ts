@@ -97,6 +97,16 @@ describe('CookiesService', () => {
         expect(spy).toHaveBeenCalledWith('name=value; path=/some-path');
       });
     });
+
+    describe('setting secure', () => {
+      it('adds secure flag if set', () => {
+        const doc = TestBed.inject(DOCUMENT);
+        const spy = spyOnProperty(doc, 'cookie', 'set');
+        const secure = true;
+        service.put('name', 'value', { secure });
+        expect(spy).toHaveBeenCalledWith('name=value; secure');
+      });
+    });
   });
 
   describe('.delete(key: string)', () => {
