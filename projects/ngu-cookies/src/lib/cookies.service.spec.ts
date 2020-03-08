@@ -87,6 +87,16 @@ describe('CookiesService', () => {
         expect(spy).toHaveBeenCalledWith('name=value; max-age=100');
       });
     });
+
+    describe('setting path', () => {
+      it('sets path correctly', () => {
+        const doc = TestBed.inject(DOCUMENT);
+        const spy = spyOnProperty(doc, 'cookie', 'set');
+        const path = '/some-path';
+        service.put('name', 'value', { path });
+        expect(spy).toHaveBeenCalledWith('name=value; path=/some-path');
+      });
+    });
   });
 
   describe('.delete(key: string)', () => {

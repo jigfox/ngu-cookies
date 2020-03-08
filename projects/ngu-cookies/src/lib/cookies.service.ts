@@ -5,6 +5,7 @@ interface CookieOptions {
   expires?: Date;
   domain?: string;
   maxAge?: number;
+  path?: string;
 }
 
 @Injectable()
@@ -30,6 +31,9 @@ export class CookiesService {
     }
     if (options.maxAge) {
       cookieEntries.push(`max-age=${options.maxAge}`);
+    }
+    if (options.path) {
+      cookieEntries.push(`path=${options.path}`);
     }
     this.doc.cookie = cookieEntries.join('; ');
   }
