@@ -77,6 +77,16 @@ describe('CookiesService', () => {
         expect(spy).toHaveBeenCalledWith('name=value; domain=example.com');
       });
     });
+
+    describe('setting max-age', () => {
+      it('set max-age correctly', () => {
+        const doc = TestBed.inject(DOCUMENT);
+        const spy = spyOnProperty(doc, 'cookie', 'set');
+        const maxAge = 100;
+        service.put('name', 'value', { maxAge });
+        expect(spy).toHaveBeenCalledWith('name=value; max-age=100');
+      });
+    });
   });
 
   describe('.delete(key: string)', () => {

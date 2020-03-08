@@ -4,6 +4,7 @@ import { DOCUMENT } from '@angular/common';
 interface CookieOptions {
   expires?: Date;
   domain?: string;
+  maxAge?: number;
 }
 
 @Injectable()
@@ -26,6 +27,9 @@ export class CookiesService {
     }
     if (options.domain) {
       cookieEntries.push(`domain=${options.domain}`);
+    }
+    if (options.maxAge) {
+      cookieEntries.push(`max-age=${options.maxAge}`);
     }
     this.doc.cookie = cookieEntries.join('; ');
   }
