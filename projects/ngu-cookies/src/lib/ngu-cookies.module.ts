@@ -5,6 +5,8 @@ import {
   SkipSelf,
 } from '@angular/core';
 import { CookiesService } from './cookies.service';
+import { BrowserCookieHandlerService } from './browser-cookies-handler.service';
+import { CookieHandlerService } from './cookie-handler.service';
 
 @NgModule({})
 export class NguCookiesModule {
@@ -19,7 +21,13 @@ export class NguCookiesModule {
   static forRoot(): ModuleWithProviders {
     return {
       ngModule: NguCookiesModule,
-      providers: [CookiesService],
+      providers: [
+        CookiesService,
+        {
+          provide: CookieHandlerService,
+          useClass: BrowserCookieHandlerService,
+        },
+      ],
     };
   }
 }

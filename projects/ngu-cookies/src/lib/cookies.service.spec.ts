@@ -1,7 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 import { DOCUMENT } from '@angular/common';
 
-import { CookiesService, SameSite } from './cookies.service';
+import { CookiesService } from './cookies.service';
+import {
+  SameSite,
+  BrowserCookieHandlerService,
+} from './browser-cookies-handler.service';
+import { CookieHandlerService } from './cookie-handler.service';
 
 class DocumentMock {
   get cookie(): string {
@@ -16,8 +21,12 @@ describe('CookiesService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
-        CookiesService,
         { provide: DOCUMENT, useClass: DocumentMock },
+        {
+          provide: CookieHandlerService,
+          useClass: BrowserCookieHandlerService,
+        },
+        CookiesService,
       ],
     });
     service = TestBed.inject(CookiesService);
@@ -197,13 +206,30 @@ describe('CookiesService', () => {
       });
     });
 
+    // http://browsercookielimits.squawky.net/
     describe('cookie limits', () => {
-      // http://browsercookielimits.squawky.net/
       it('throws error if more than 50 cookies are added', () => {
-        for (let i = 0, len = 50 - service.count(); i < len; i++) {
-          expect(() => service.put(`a${i}`, '')).not.toThrowError();
-        }
+        const doc = TestBed.inject(DOCUMENT);
+        spyOnProperty(doc, 'cookie', 'get').and.returnValue(
+          Array(50)
+            .fill(0)
+            .map((v, i) => `c${i}=${v}`)
+            .join(';'),
+        );
+
         expect(() => service.put(`a51`, '')).toThrowError();
+      });
+
+      it('throws allows 50th cookie', () => {
+        const doc = TestBed.inject(DOCUMENT);
+        spyOnProperty(doc, 'cookie', 'get').and.returnValue(
+          Array(49)
+            .fill(0)
+            .map((v, i) => `c${i}=${v}`)
+            .join(';'),
+        );
+
+        expect(() => service.put(`a50`, '')).not.toThrowError();
       });
 
       it('throws error if more than 4093 bytes will be added', () => {
