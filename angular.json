@@ -22,12 +22,8 @@
           }
         },
         "test": {
-          "builder": "@angular-devkit/build-angular:karma",
-          "options": {
-            "main": "projects/ngu-cookies/src/test.ts",
-            "tsConfig": "projects/ngu-cookies/tsconfig.spec.json",
-            "karmaConfig": "projects/ngu-cookies/karma.conf.js"
-          }
+          "builder": "@angular-builders/jest:run",
+          "options": {}
         },
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
@@ -113,12 +109,9 @@
           }
         },
         "test": {
-          "builder": "@angular-devkit/build-angular:karma",
+          "builder": "@angular-builders/jest:run",
           "options": {
-            "main": "projects/cookies-showcase/src/test.ts",
             "polyfills": "projects/cookies-showcase/src/polyfills.ts",
-            "tsConfig": "projects/cookies-showcase/tsconfig.spec.json",
-            "karmaConfig": "projects/cookies-showcase/karma.conf.js",
             "assets": [
               "projects/cookies-showcase/src/favicon.ico",
               "projects/cookies-showcase/src/assets"
