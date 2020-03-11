@@ -233,10 +233,7 @@ describe('CookiesService', () => {
       });
 
       it('throws error if more than 4093 bytes will be added', () => {
-        const doc = TestBed.inject(DOCUMENT);
-        jest.spyOn(doc, 'cookie', 'get').mockReturnValue(
-          `x=${'a'.repeat(4089)}`, // 4091 bytes
-        );
+        expect(() => service.put('x', 'a'.repeat(4067))).not.toThrowError();
         // add ';b=' 3 bytes
         expect(() => service.put('b', '')).toThrowError();
       });
@@ -248,7 +245,7 @@ describe('CookiesService', () => {
       const doc = TestBed.inject(DOCUMENT);
       const spy = jest.spyOn(doc, 'cookie', 'set');
       expect(service.get('key1')).toBeTruthy();
-      service.delete('key1');
+      service.delete('key1', {});
       expect(service.get('key1')).toBeFalsy();
       expect(spy).toHaveBeenCalledWith(
         'key1=; expires=Thu, 01 Jan 1970 00:00:00 GMT',

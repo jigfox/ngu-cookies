@@ -50,8 +50,4 @@ export class BrowserCookieHandlerService extends CookieHandlerService {
     }
     this.doc.cookie = cookieEntries.join('; ');
   }
-
-  protected rawCookieLength(): number {
-    return this.doc.cookie.length;
-  }
 }

@@ -31,8 +31,9 @@ export abstract class CookieHandlerService {
     const value = this.cookies.get(key);
     return value && (skipUriDecoding ? value : decodeURIComponent(value));
   }
-  deleteCookie(key: string): void {
-    this.writeCookie(key, '', { expires: new Date(0) });
+  deleteCookie(key: string, options: CookieOptions = {}): void {
+    delete options.maxAge;
+    this.writeCookie(key, '', { ...options, expires: new Date(0) });
     this.cookies.delete(key);
   }
   protected getCookies(): Map<string, string> {
@@ -48,7 +49,12 @@ export abstract class CookieHandlerService {
     return key.length + value.length + 1;
   }
 
-  protected abstract rawCookieLength(): number;
+  protected rawCookieLength(): number {
+    return Array.from(this.cookies.entries()).reduce((sum, [key, value]) => {
+      return sum + this.getCookieLength(key, value);
+    }, 0);
+  }
+
   protected abstract readRawCookie(): string;
   protected abstract writeRawCookie(
     key: string,

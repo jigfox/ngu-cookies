@@ -14,7 +14,7 @@ export class CookiesService {
     this.cookieHandler.writeCookie(key, value, options);
   }
 
-  delete(key: string): void {
-    this.cookieHandler.deleteCookie(key);
+  delete(key: string, options: CookieOptions = {}): void {
+    this.cookieHandler.deleteCookie(key, options);
   }
 }
