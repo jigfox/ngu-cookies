@@ -3,12 +3,23 @@ import {
   NgModule,
   Optional,
   SkipSelf,
+  InjectionToken,
 } from '@angular/core';
 import { CookiesService } from './cookies.service';
-import { BrowserCookieHandlerService } from './browser-cookies-handler.service';
+import {
+  BrowserCookieHandlerService,
+  CookieOptions,
+} from './browser-cookies-handler.service';
 import { CookieHandlerService } from './cookie-handler.service';
 
-@NgModule({})
+export const CookieConfig = new InjectionToken<CookieOptions>('CookieOptions');
+
+@NgModule({
+  providers: [
+    CookiesService,
+    { provide: CookieHandlerService, useClass: BrowserCookieHandlerService },
+  ],
+})
 export class NguCookiesModule {
   constructor(@Optional() @SkipSelf() parentModule?: NguCookiesModule) {
     if (parentModule) {
@@ -18,10 +29,11 @@ export class NguCookiesModule {
     }
   }
 
-  static forRoot(): ModuleWithProviders {
+  static withConfig(config: CookieOptions): ModuleWithProviders {
     return {
       ngModule: NguCookiesModule,
       providers: [
+        { provide: CookieConfig, useValue: config },
         CookiesService,
         {
           provide: CookieHandlerService,

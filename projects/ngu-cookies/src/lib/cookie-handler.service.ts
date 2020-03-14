@@ -27,18 +27,22 @@ export abstract class CookieHandlerService {
     this.writeRawCookie(key, value, options);
     this.cookies.set(key, value);
   }
+
   readCookie(key: string, skipUriDecoding = false) {
     const value = this.cookies.get(key);
     return value && (skipUriDecoding ? value : decodeURIComponent(value));
   }
+
   deleteCookie(key: string, options: CookieOptions = {}): void {
     delete options.maxAge;
     this.writeCookie(key, '', { ...options, expires: new Date(0) });
     this.cookies.delete(key);
   }
+
   protected getCookies(): Map<string, string> {
     return this.readRawCookie()
       .split(/; */)
+      .filter(c => c)
       .map(pair => pair.split('=').map(a => a.trim()))
       .reduce((cookiesMap, [key, value]) => {
         cookiesMap.set(key, value);

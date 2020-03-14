@@ -12,6 +12,7 @@ export class BackendCookieHandlerService extends CookieHandlerService {
     @Inject(RESPONSE) private res: Response,
   ) {
     super();
+    this.cookies = this.getCookies();
   }
 
   protected readRawCookie(): string {

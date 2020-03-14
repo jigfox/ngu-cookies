@@ -1,32 +1,27 @@
-import {
-  ModuleWithProviders,
-  NgModule,
-  Optional,
-  SkipSelf,
-} from '@angular/core';
-import { CookiesService } from './cookies.service';
+import { NgModule, Optional, SkipSelf } from '@angular/core';
 import { BackendCookieHandlerService } from './backend-cookies-handler.service';
 import { CookieHandlerService } from './cookie-handler.service';
+import { NguCookiesModule } from './ngu-cookies.module';
 
-@NgModule({})
+@NgModule({
+  providers: [
+    { provide: CookieHandlerService, useClass: BackendCookieHandlerService },
+  ],
+})
 export class NguCookiesBackendModule {
-  constructor(@Optional() @SkipSelf() parentModule?: NguCookiesBackendModule) {
+  constructor(
+    @Optional() @SkipSelf() parentModule?: NguCookiesBackendModule,
+    @Optional() mainModule?: NguCookiesModule,
+  ) {
     if (parentModule) {
       throw new Error(
-        'NguCookiesModule is already loaded. Import it in the AppModule only',
+        'NguCookiesBackendModule is already loaded. Import it in the AppModule only',
       );
     }
-  }
-
-  static forRoot(): ModuleWithProviders {
-    return {
-      ngModule: NguCookiesBackendModule,
-      providers: [
-        {
-          provide: CookieHandlerService,
-          useClass: BackendCookieHandlerService,
-        },
-      ],
-    };
+    if (!mainModule) {
+      throw new Error(
+        'NguCookiesBackendModule requires NguCookiesModule to be imported before',
+      );
+    }
   }
 }
