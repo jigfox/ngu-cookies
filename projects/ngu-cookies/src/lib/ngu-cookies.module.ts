@@ -3,16 +3,13 @@ import {
   NgModule,
   Optional,
   SkipSelf,
-  InjectionToken,
 } from '@angular/core';
-import { CookiesService } from './cookies.service';
+import { CookiesService, CookieConfig } from './cookies.service';
 import {
   BrowserCookieHandlerService,
   CookieOptions,
 } from './browser-cookies-handler.service';
 import { CookieHandlerService } from './cookie-handler.service';
-
-export const CookieConfig = new InjectionToken<CookieOptions>('CookieOptions');
 
 @NgModule({
   providers: [

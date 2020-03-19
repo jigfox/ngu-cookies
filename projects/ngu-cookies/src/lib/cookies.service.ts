@@ -1,6 +1,8 @@
-import { Injectable, Optional } from '@angular/core';
+import { Injectable, Optional, Inject, InjectionToken } from '@angular/core';
 import { CookieOptions } from './browser-cookies-handler.service';
 import { CookieHandlerService } from './cookie-handler.service';
+
+export const CookieConfig = new InjectionToken<CookieOptions>('CookieOptions');
 
 @Injectable()
 export class CookiesService {
@@ -8,7 +10,7 @@ export class CookiesService {
 
   constructor(
     private cookieHandler: CookieHandlerService,
-    @Optional() defaultConfig: CookieOptions,
+    @Inject(CookieConfig) @Optional() defaultConfig: CookieOptions,
   ) {
     this.defaultConfig = defaultConfig ?? this.defaultConfig;
   }
