@@ -1,16 +1,11 @@
 import { TestBed } from '@angular/core/testing';
 import { NgModule } from '@angular/core';
-
-import { NguCookiesModule, CookieConfig } from './ngu-cookies.module';
-import { NguCookiesBackendModule } from './ngu-cookies-backend.module';
-import { CookiesService } from './cookies.service';
-import { CookieHandlerService } from './cookie-handler.service';
-import {
-  BrowserCookieHandlerService,
-  CookieOptions,
-} from './browser-cookies-handler.service';
 import { REQUEST, RESPONSE } from '@nguniversal/express-engine/tokens';
-import { BackendCookieHandlerService } from './backend-cookies-handler.service';
+
+import { NguCookiesModule } from './ngu-cookies.module';
+import { NguCookiesBackendModule } from './ngu-cookies-backend.module';
+import { BackendService } from './cookies.service';
+import { ServerBackendService } from './backends/server-backend.service';
 
 @NgModule({ imports: [NguCookiesBackendModule] })
 class TestModule {}
@@ -28,7 +23,7 @@ describe('NguCookiesBackendModule', () => {
     });
 
     it('fails to create', () => {
-      expect(() => TestBed.inject(CookieHandlerService)).toThrowError(
+      expect(() => TestBed.inject(BackendService)).toThrowError(
         /requires NguCookiesModule/,
       );
     });
@@ -46,13 +41,11 @@ describe('NguCookiesBackendModule', () => {
     });
 
     it('succeeds to create', () => {
-      expect(() => TestBed.inject(CookieHandlerService)).not.toThrowError();
+      expect(() => TestBed.inject(BackendService)).not.toThrowError();
     });
 
-    it('provides CookieHandlerService as BackendCookieHandlerService', () => {
-      expect(TestBed.get(CookieHandlerService)).toBeInstanceOf(
-        BackendCookieHandlerService,
-      );
+    it('provides ServerBackendService as BackendService', () => {
+      expect(TestBed.get(BackendService)).toBeInstanceOf(ServerBackendService);
     });
   });
 });

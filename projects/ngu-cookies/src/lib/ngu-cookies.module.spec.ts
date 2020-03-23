@@ -1,12 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { NguCookiesModule, CookieConfig } from './ngu-cookies.module';
-import { CookiesService } from './cookies.service';
-import { CookieHandlerService } from './cookie-handler.service';
+import { NguCookiesModule } from './ngu-cookies.module';
 import {
-  BrowserCookieHandlerService,
-  CookieOptions,
-} from './browser-cookies-handler.service';
+  CookiesService,
+  BackendService,
+  CookieConfig,
+} from './cookies.service';
+import { BrowserBackendService } from './backends/browser-backend.service';
+import { CookieOptions } from './interfaces';
 
 describe('NguCookiesModule', () => {
   describe('without config', () => {
@@ -21,9 +22,9 @@ describe('NguCookiesModule', () => {
     });
 
     it('provides CookieHandlerService', () => {
-      expect(TestBed.inject(CookieHandlerService)).toBeTruthy();
-      expect(TestBed.inject(CookieHandlerService)).toBeInstanceOf(
-        BrowserCookieHandlerService,
+      expect(TestBed.inject(BackendService)).toBeTruthy();
+      expect(TestBed.inject(BackendService)).toBeInstanceOf(
+        BrowserBackendService,
       );
     });
 
@@ -45,9 +46,9 @@ describe('NguCookiesModule', () => {
     });
 
     it('provides CookieHandlerService', () => {
-      expect(TestBed.inject(CookieHandlerService)).toBeTruthy();
-      expect(TestBed.inject(CookieHandlerService)).toBeInstanceOf(
-        BrowserCookieHandlerService,
+      expect(TestBed.inject(BackendService)).toBeTruthy();
+      expect(TestBed.inject(BackendService)).toBeInstanceOf(
+        BrowserBackendService,
       );
     });
 

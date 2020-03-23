@@ -4,17 +4,18 @@ import {
   Optional,
   SkipSelf,
 } from '@angular/core';
-import { CookiesService, CookieConfig } from './cookies.service';
 import {
-  BrowserCookieHandlerService,
-  CookieOptions,
-} from './browser-cookies-handler.service';
-import { CookieHandlerService } from './cookie-handler.service';
+  CookiesService,
+  CookieConfig,
+  BackendService,
+} from './cookies.service';
+import { BrowserBackendService } from './backends/browser-backend.service';
+import { CookieOptions } from './interfaces';
 
 @NgModule({
   providers: [
     CookiesService,
-    { provide: CookieHandlerService, useClass: BrowserCookieHandlerService },
+    { provide: BackendService, useClass: BrowserBackendService },
   ],
 })
 export class NguCookiesModule {
@@ -33,8 +34,8 @@ export class NguCookiesModule {
         { provide: CookieConfig, useValue: config },
         CookiesService,
         {
-          provide: CookieHandlerService,
-          useClass: BrowserCookieHandlerService,
+          provide: BackendService,
+          useClass: BrowserBackendService,
         },
       ],
     };

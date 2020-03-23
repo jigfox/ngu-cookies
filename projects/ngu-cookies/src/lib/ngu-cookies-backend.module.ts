@@ -1,12 +1,11 @@
 import { NgModule, Optional, SkipSelf } from '@angular/core';
-import { BackendCookieHandlerService } from './backend-cookies-handler.service';
-import { CookieHandlerService } from './cookie-handler.service';
+
 import { NguCookiesModule } from './ngu-cookies.module';
+import { BackendService } from './cookies.service';
+import { ServerBackendService } from './backends/server-backend.service';
 
 @NgModule({
-  providers: [
-    { provide: CookieHandlerService, useClass: BackendCookieHandlerService },
-  ],
+  providers: [{ provide: BackendService, useClass: ServerBackendService }],
 })
 export class NguCookiesBackendModule {
   constructor(
