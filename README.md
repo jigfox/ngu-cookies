@@ -1,6 +1,8 @@
 ![Node.js CI](https://github.com/jigfox/ngu-cookies/workflows/Node.js%20CI/badge.svg)
-[![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg)](https://conventionalcommits.org)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-green.svg)](https://conventionalcommits.org)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
+[![codecov](https://codecov.io/gh/jigfox/ngu-cookies/branch/master/graph/badge.svg)](https://codecov.io/gh/jigfox/ngu-cookies)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=jigfox_ngu-cookies&metric=alert_status)](https://sonarcloud.io/dashboard?id=jigfox_ngu-cookies)
 
 # NguCookies
 
