@@ -3,6 +3,7 @@ import { DOCUMENT } from '@angular/common';
 
 import { CookieBackend, CookieOptions } from '../interfaces';
 
+/** @dynamic */
 @Injectable()
 export class BrowserBackendService implements CookieBackend {
   constructor(@Inject(DOCUMENT) private doc: Document) {}
