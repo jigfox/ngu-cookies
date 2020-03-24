@@ -203,7 +203,7 @@ describe('CookiesService', () => {
 
     it('deletes cookie w/o options', () => {
       service.put('key1', 'value');
-      expect(service.get('ky1')).toBeTruthy();
+      expect(service.get('key1')).toBeTruthy();
       service.delete('key1');
       expect(service.get('key1')).toBeFalsy();
     });

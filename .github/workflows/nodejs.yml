@@ -25,9 +25,12 @@ jobs:
         with:
           node-version: 12.x
       - run: npm ci
-      - run: npm test
+      - run: npm test -- ngu-cookies --coverage
         env:
           CI: true
+      - uses: codecov/codecov-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
 
   lint:
     runs-on: ubuntu-latest
@@ -44,18 +47,3 @@ jobs:
           node-version: 12.x
       - run: npm ci
       - run: npm run lint
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/cache@v1
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
-      - name: Use Node.js
-        uses: actions/setup-node@v1
-        with:
-          node-version: 12.x
-      - run: npm build ngu-cookies
